@@ -3,10 +3,26 @@ import java.util.*;
 public class Enroller{
     Scanner scan = new Scanner(System.in);
 
-    public Enroller(){
-        System.out.println("Enroller System");
-        System.out.println("Please prepare the following: \nStudent First Name\nStudent Last Name\nStudent Age");
-        this.confirm();
+    public Enroller(StudentDatabase database){
+        int op = 0;
+        int flag = 0;
+        
+        while(flag == 0){
+            System.out.println("main menu\n");
+            System.out.print("Enroller tools\n[1] Add student\n[2] View student\n[3] Logout enroller\nop: ");
+            op = scan.nextInt();
+            switch(op){
+                case 1:
+                    this.addStudentChooser(database);
+                    break;
+                case 2:
+                    database.searchChoose();
+                    break;
+                case 3:
+                    flag = 1;
+                    break;
+            }
+        }
     }
 
     public boolean confirm(){
@@ -17,7 +33,6 @@ public class Enroller{
             char checker = scan.next().charAt(0);
             scan.nextLine();
             
-
             if(checker == 'y' || checker == 'Y'){
                 return true;
             }
@@ -31,13 +46,39 @@ public class Enroller{
         return false;
     }
 
-    public Students enrollStudent(){
+    public void addStudentChooser(StudentDatabase database){
         int op = 0;
+        int flag = 0;
+
+        while(flag == 0){
+            System.out.println("Student Menu\n");
+            System.out.print("[1] Add a student\n[2] Add batch of students\n[3] Exit to main menu\nop: ");
+            op = scan.nextInt();
+            switch(op){
+                case 1:
+                    this.enrollStudent(database);
+                    break;
+                case 2:
+                    this.enrollBatchStudents(database);
+                    break;
+                case 3:
+                    flag = 1;
+                    break;
+            }
+        }
+    }
+
+    public void enrollStudent(StudentDatabase database){
+        int op = 0;
+
         Students placeholder = new Students();
-        if(!this.confirm()){
+        System.out.println();
+        boolean confirmed = this.confirm();
+
+        if(!confirmed){
             System.out.println("Thank you for using the Enrollment System!");
             System.out.println("Exiting..");
-            return null;
+            return;
         }
         System.out.print("Student First Name: ");
         placeholder.setFirstName(scan.nextLine());
@@ -45,6 +86,7 @@ public class Enroller{
         placeholder.setLastName(scan.nextLine());
         System.out.print("Enter Age: ");
         placeholder.setAge(scan.nextLine());
+        placeholder.setCourse();
         placeholder.printDetails();
                 
         while(op == 0){
@@ -52,18 +94,46 @@ public class Enroller{
             char checker = scan.next().charAt(0);
 
             if(checker == 'y' || checker == 'Y'){
-                System.out.println("Student Added! ");
-                System.out.println("Thank you for using the enrollment Systenm!");
-                return placeholder;
+                String student_id = this.generateId();
+                placeholder.setStudentNumber(student_id);
+                System.out.println("STUDENT ADDED! ");
+                System.out.println("STUDENT ID: " + student_id);
+                System.out.println("Thank you for using the enrollment Systenm!\n");
+                database.addStudent(placeholder);
+                return;
             }
             else if (checker == 'n' || checker == 'N'){
-                System.out.println("Thank you for using the enrollment System");
-                return null;
+                System.out.println("Thank you for using the enrollment System\n");
+                return;
             }
             else{
                 System.out.print("Invalid input");
             }
         }
-        return null;
+        return;
+    }
+
+    public void enrollBatchStudents(StudentDatabase database){
+        int number;
+        System.out.print("How many students would you like to enroll: ");
+        number = scan.nextInt();
+
+        for(int i = 0; i < number; i++){
+            this.enrollStudent(database);
+        }
+    }
+
+    public String generateId(){
+        Random random = new Random();
+        String characters = "0123456789";
+        char[] text = new char[5];
+        for(int i = 0; i < 5; i++){
+            text[i] = characters.charAt(random.nextInt(characters.length()));
+        }
+        return new String(text);
+    }
+
+    public void viewStudent(){
+        
     }
 }

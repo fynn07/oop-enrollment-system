@@ -1,9 +1,13 @@
+import java.util.*;
+
 public class Students{
     private Person person;
     private String studentNumber;
+    private String course;
     private boolean removed;
 
     public Students(){
+        this.person = new Person();
         this.removed = false;
     }
     
@@ -35,6 +39,27 @@ public class Students{
         return this.person.getAge();
     }
 
+    public String getCourse(){
+        return this.course;
+    }
+    public void setCourse(){
+        Scanner scan = new Scanner(System.in);
+        int flag = 0;
+        while(flag == 0){
+            System.out.print("Enter your Course [BSIT BSCS BSCE BSCPE BSA]: ");
+            String input = scan.next();
+            
+            if (input.equals("BSCS") || input.equals("BSIT") || input.equals("BSCE") || 
+                input.equals("BSCPE") || input.equals("BSA")){
+                this.course = input;
+                flag = 1;
+            }
+            else{
+                System.out.println("Invalid Course");
+            }
+        }
+    }
+
     public String getStudentNumber(){
         return this.studentNumber;
     }
@@ -43,11 +68,28 @@ public class Students{
         this.removed = true;
     }
 
+    public void setCourse(String course){
+        this.course = course;
+    }
+
     public void printDetails(){
         System.out.println();
         System.out.println("-----------------------------------------");
         System.out.println("First Name: " + this.getFirstName());
         System.out.println("Last Name: " + this.getLastName());
         System.out.println("Age: " + this.getAge());
+        System.out.println("Course: " + this.getCourse());
+        System.out.println("-----------------------------------------"); 
+    }
+
+    public void printDetailsWithId(){
+        System.out.println();
+        System.out.println("-----------------------------------------");
+        System.out.println("First Name: " + this.getFirstName());
+        System.out.println("Last Name: " + this.getLastName());
+        System.out.println("Age: " + this.getAge());
+        System.out.println("Course: " + this.getCourse());
+        System.out.println("Student Id: " + this.getStudentNumber());
+        System.out.println("-----------------------------------------"); 
     }
 }
