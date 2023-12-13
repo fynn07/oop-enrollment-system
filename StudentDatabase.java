@@ -3,10 +3,16 @@ import java.util.Scanner;
 public class StudentDatabase{
     private Students[] student_list;
     private int studentCount;
+    private Approver approver;
 
-    public StudentDatabase(){
+    public StudentDatabase(Approver approver){
         this.student_list = new Students[100];
         this.studentCount = 0;
+        this.approver = approver;
+    }
+
+    public Approver getApprover(){
+        return this.approver;
     }
 
     public Students[] getStudentList(){
@@ -24,6 +30,15 @@ public class StudentDatabase{
     public void addStudent(Students student){
         this.student_list[studentCount] = student;
         this.studentCount++;
+    }
+
+    public boolean idIsRepeated(String text){
+        for(int i = 0; i < this.getStudentCount(); i++){
+            if(text.equals(this.student_list[i])){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void printStudent(){
@@ -47,7 +62,7 @@ public class StudentDatabase{
                 return student_list[i];
             }
         }
-        System.out.print("Student not found");
+        System.out.println("Student not found");
         return null;
     }
 
@@ -76,7 +91,7 @@ public class StudentDatabase{
             }
         }
         if(count == 0){
-            System.out.println("Student not found!");
+            System.out.println("Student not found!\n");
         }
         else{
             System.out.println("Students found: " + count);
@@ -84,6 +99,10 @@ public class StudentDatabase{
     }    
 
     public void studentRemover(Students student){
+        if(approver.isIn(student)){
+            System.out.print("Cannot remove Student with pending course change. \n");
+            return;
+        }
         Scanner scan = new Scanner(System.in);
         int flag = 0;
         char choice;
@@ -112,8 +131,117 @@ public class StudentDatabase{
         }    
     }
 
-    public void modifyStudentChooser(){
+    public void modifyStudentChooser(Students student){
+        Scanner scan = new Scanner(System.in);
+        int flag = 0;
+        int op;
+        char n;
+        String text;
+        while(flag == 0){
+            System.out.println("modify student " + student.getStudentNumber() + " by:");
+            System.out.println("[1] First Name\n[2] Last Name\n[3] Age\n[4] Course\n[5] Exit\nop: ");
+            op = scan.nextInt();
+            switch(op){
+                case 1:
+                    System.out.println("Previous First Name: " + student.getFirstName());
+                    System.out.print("Change First Name to: ");
+                    scan.nextLine();
+                    text = scan.nextLine();
+                    while(true){
+                        System.out.print("Are you sure you want to change " + student.getFirstName() +" to " + text + "? [y/n]: ");
+                        n = scan.next().charAt(0);
+                        if(n == 'y' || n =='Y'){
+                            student.setFirstName(text);
+                            student.printDetailsWithId();
+                            break;
+                        }
+                        else if(n == 'n' || n == 'N'){
+                            break;
+                        }
+                        else{
+                            System.out.println("Invalid Operation\n");
+                        }
+                    }
+                    flag = 1;
+                    break;
+                case 2:
+                    System.out.println("Previous Last Name: " + student.getLastName());
+                    System.out.print("Change Last Name to: ");
+                    scan.nextLine();
+                    text = scan.nextLine();
+                    while(true){
+                        System.out.print("Are you sure you want to change " + student.getLastName() +" to " + text + "? [y/n]: ");
+                        n = scan.next().charAt(0);
+                        if(n == 'y' || n =='Y'){
+                            student.setLastName(text);
+                            student.printDetailsWithId();
+                            break;
+                        }
+                        else if(n == 'n' || n == 'N'){
+                            break;
+                        }
+                        else{
+                            System.out.println("Invalid Operation\n");
+                        }
+                    }
+                    flag = 1;
+                    break;
+                case 3:
+                    System.out.println("Previous Age: " + student.getAge());
+                    System.out.print("Change Age to: ");
+                    scan.nextLine();
+                    text = scan.nextLine();
+                    while(true){
+                        System.out.print("Are you sure you want to change " + student.getAge() +" to " + text + "? [y/n]: ");
+                        n = scan.next().charAt(0);
+                        if(n == 'y' || n =='Y'){
+                            student.setAge(text);
+                            student.printDetailsWithId();
+                            break;
+                        }
+                        else if(n == 'n' || n == 'N'){
+                            break;
+                        }
+                        else{
+                            System.out.println("Invalid Operation\n");
+                        }
+                    }
+                    flag = 1;
+                    break;
+                case 4:
+                    if(approver.isIn(student)){
+                        System.out.print("Already has pending course change. \n");
+                        return;
+                    }
+                    if(student.getRemove()){
+                        System.out.print("Cannot change course for removed student. \n");
+                        return;
+                    }
+                    while(true){
+                        System.out.println("Previous Course: " + student.getCourse());
+                        System.out.println("Enter new course [BSIT BSCS BSCE BSCPE BSA]: ");                        
+                        text = scan.next();
 
+                        if(text.equals(student.getCourse())){
+                            System.out.println("Already in " + student.getCourse() + " program.\n");
+                        }
+                        else if (text.equals("BSCS") || text.equals("BSIT") || text.equals("BSCE") || 
+                            text.equals("BSCPE") || text.equals("BSA")){
+                            this.approver.addQeuery(student, text);
+                            break;
+                        }
+                        else{
+                            System.out.println("Invalid Course");
+                        }                        
+                    }
+                    break;
+                case 5:
+                    flag = 1;
+                    break;
+                default:
+                    System.out.println("Invalid Input");
+            }
+        }
     }
 
     public void studentActivityChooser(Students student){
@@ -126,7 +254,7 @@ public class StudentDatabase{
             
             switch(op){
                 case 1:
-                    //modify student
+                    this.modifyStudentChooser(student);
                     break;
                 case 2:
                     if(student.getRemove()){
@@ -137,6 +265,9 @@ public class StudentDatabase{
                     break;
                 case 3:
                     flag = 1;
+                    break;
+                default:
+                    System.out.print("Invalid Input\n");
                     break;
             }
         }
@@ -197,6 +328,9 @@ public class StudentDatabase{
 
                     if(tempflag == 'n' || tempflag == 'N'){flag = 1;}
                     System.out.println();
+                    break;
+                default:
+                    System.out.println("Invalid Input\n");
                     break;
                     
             }

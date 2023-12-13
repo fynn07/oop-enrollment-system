@@ -1,6 +1,7 @@
 public class main{
     public static void main(String[] args){
-        StudentDatabase database = new StudentDatabase();
-        Admin admin = new Admin(database);
+        Approver approver = new Approver();
+        StudentDatabase database = new StudentDatabase(approver);
+        Admin admin = new Admin(database, approver);
     }
 }

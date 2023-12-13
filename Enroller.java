@@ -21,6 +21,9 @@ public class Enroller{
                 case 3:
                     flag = 1;
                     break;
+                default:
+                 System.out.println("Invalid Input\n");
+                    break;
             }
         }
     }
@@ -64,6 +67,8 @@ public class Enroller{
                 case 3:
                     flag = 1;
                     break;
+                default:
+                    System.out.print("Invalid Input\n");
             }
         }
     }
@@ -95,7 +100,7 @@ public class Enroller{
             scan.nextLine();
             
             if(checker == 'y' || checker == 'Y'){
-                String student_id = this.generateId();
+                String student_id = this.generateId(database);
                 placeholder.setStudentNumber(student_id);
                 System.out.println("STUDENT ADDED! ");
                 System.out.println("STUDENT ID: " + student_id);
@@ -124,14 +129,25 @@ public class Enroller{
         }
     }
 
-    public String generateId(){
+    public String generateId(StudentDatabase database){
         Random random = new Random();
         String characters = "0123456789";
-        char[] text = new char[5];
-        for(int i = 0; i < 5; i++){
-            text[i] = characters.charAt(random.nextInt(characters.length()));
+        while(true){
+            char[] text = new char[5];
+            for(int i = 0; i < 5; i++){
+                text[i] = characters.charAt(random.nextInt(characters.length()));
+            }
+            String new_string = new String(text);
+
+            if(database.idIsRepeated(new_string)){
+                continue;
+            }
+            else{
+                return new String(text);   
+            }
+                     
         }
-        return new String(text);
+
     }
 
     public void viewStudent(){
