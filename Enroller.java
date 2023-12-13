@@ -92,7 +92,8 @@ public class Enroller{
         while(op == 0){
             System.out.println("confirm? [y/n]: ");
             char checker = scan.next().charAt(0);
-
+            scan.nextLine();
+            
             if(checker == 'y' || checker == 'Y'){
                 String student_id = this.generateId();
                 placeholder.setStudentNumber(student_id);

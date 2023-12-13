@@ -39,9 +39,25 @@ public class Students{
         return this.person.getAge();
     }
 
+    public String getStudentNumber(){
+        return this.studentNumber;
+    }
+
+    public void setRemove(){
+        this.removed = true;
+    }
+
+    public boolean getRemove(){
+        return this.removed;
+    }
+
+    public void setCourse(String course){
+        this.course = course;
+    }
     public String getCourse(){
         return this.course;
     }
+
     public void setCourse(){
         Scanner scan = new Scanner(System.in);
         int flag = 0;
@@ -60,18 +76,6 @@ public class Students{
         }
     }
 
-    public String getStudentNumber(){
-        return this.studentNumber;
-    }
-
-    public void setRemove(){
-        this.removed = true;
-    }
-
-    public void setCourse(String course){
-        this.course = course;
-    }
-
     public void printDetails(){
         System.out.println();
         System.out.println("-----------------------------------------");
@@ -83,6 +87,12 @@ public class Students{
     }
 
     public void printDetailsWithId(){
+        String text;
+        if(this.getRemove()){
+            text = "REMOVED";
+        }
+        else{text = "ENROLLED";}
+
         System.out.println();
         System.out.println("-----------------------------------------");
         System.out.println("First Name: " + this.getFirstName());
@@ -90,6 +100,7 @@ public class Students{
         System.out.println("Age: " + this.getAge());
         System.out.println("Course: " + this.getCourse());
         System.out.println("Student Id: " + this.getStudentNumber());
+        System.out.println("Status: " + text);
         System.out.println("-----------------------------------------"); 
     }
 }
