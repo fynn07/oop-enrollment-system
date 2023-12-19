@@ -82,7 +82,7 @@ public class Approver {
             return;
         }
         while(true){
-            System.out.println("Do you wish to start approving requests? [y/n]: ");
+            System.out.print("Do you wish to start approving requests? [y/n]: ");
             op = scan.next().charAt(0);
             if(op == 'y' || op == 'Y' || op == 'n' || op == 'N'){
                 break;

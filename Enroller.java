@@ -78,13 +78,8 @@ public class Enroller{
 
         Students placeholder = new Students();
         System.out.println();
-        boolean confirmed = this.confirm();
 
-        if(!confirmed){
-            System.out.println("Thank you for using the Enrollment System!");
-            System.out.println("Exiting..");
-            return;
-        }
+        scan.nextLine();
         System.out.print("Student First Name: ");
         placeholder.setFirstName(scan.nextLine());
         System.out.print("Student Last Name: ");
@@ -95,9 +90,8 @@ public class Enroller{
         placeholder.printDetails();
                 
         while(op == 0){
-            System.out.println("confirm? [y/n]: ");
+            System.out.print("confirm? [y/n]: ");
             char checker = scan.next().charAt(0);
-            scan.nextLine();
             
             if(checker == 'y' || checker == 'Y'){
                 String student_id = this.generateId(database);
@@ -123,8 +117,10 @@ public class Enroller{
         int number;
         System.out.print("How many students would you like to enroll: ");
         number = scan.nextInt();
+        System.out.println();
 
         for(int i = 0; i < number; i++){
+            System.out.println("Student #" + (i+1));
             this.enrollStudent(database);
         }
     }

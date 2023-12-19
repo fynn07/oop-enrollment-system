@@ -139,7 +139,7 @@ public class StudentDatabase{
         String text;
         while(flag == 0){
             System.out.println("modify student " + student.getStudentNumber() + " by:");
-            System.out.println("[1] First Name\n[2] Last Name\n[3] Age\n[4] Course\n[5] Exit\nop: ");
+            System.out.print("[1] First Name\n[2] Last Name\n[3] Age\n[4] Course\n[5] Exit\nop: ");
             op = scan.nextInt();
             switch(op){
                 case 1:
@@ -219,7 +219,7 @@ public class StudentDatabase{
                     }
                     while(true){
                         System.out.println("Previous Course: " + student.getCourse());
-                        System.out.println("Enter new course [BSIT BSCS BSCE BSCPE BSA]: ");                        
+                        System.out.print("Enter new course [BSIT BSCS BSCE BSCPE BSA]: ");                        
                         text = scan.next();
 
                         if(text.equals(student.getCourse())){
@@ -249,7 +249,7 @@ public class StudentDatabase{
         int op = 0;
         int flag = 0;
         while(flag == 0){
-            System.out.println("[1] Modify Student\n[2] Remove Student\n[3] Exit\nop: ");
+            System.out.print("[1] Modify Student\n[2] Remove Student\n[3] Exit\nop: ");
             op = scan.nextInt();
             
             switch(op){
@@ -281,7 +281,7 @@ public class StudentDatabase{
         String text;
         while(flag == 0){
             System.out.println("View Students by.. \n");
-            System.out.print("[1] Id\n[2] Name\n[3] Course\n[4] Print All\nop: ");
+            System.out.print("[1] Id\n[2] Name\n[3] Course\n[4] Print All\n[5] Exit\nop: ");
             op = scan.nextInt();
             switch(op){
                 case 1:
@@ -328,6 +328,9 @@ public class StudentDatabase{
 
                     if(tempflag == 'n' || tempflag == 'N'){flag = 1;}
                     System.out.println();
+                    break;
+                case 5:
+                    flag = 1;
                     break;
                 default:
                     System.out.println("Invalid Input\n");
